@@ -1,5 +1,8 @@
 'use strict';
 (function () {
+  var fragment = document.createDocumentFragment();
+  var pinContainer = document.querySelector('.map__pins');
+
   function showMap() {
     var map = document.querySelector('.map');
     map.classList.remove('map--faded');
@@ -17,22 +20,14 @@
     return imgLink;
   }
 
-  // function getRandomLocation() {
-  //   var pinPosition = 'left: ' + getRandomIntInclusive(100, 1100) + 'px; ' + ' top: ' + getRandomIntInclusive(130, 630) + 'px';
-  //   return pinPosition;
-  // }
-
-
   var renderPins = function (point) {
-    var pinContainer = document.querySelector('.map__pins');
     var pinTemplate = document.querySelector('#pin').content;
-    var mapPin = pinTemplate.querySelector('.map__pin');
-    var imgPin = pinTemplate.querySelector('img');
 
-    pinTemplate.cloneNode(true);
-    mapPin.style = point.location.left + point.location.top;
-    imgPin.src = point.author.avatar;
-    pinContainer.appendChild(pinTemplate);
+    var pinElement = pinTemplate.cloneNode(true);
+    pinElement.querySelector('.map__pin').style = point.location.left + point.location.top;
+    pinElement.querySelector('img').src = point.author.avatar;
+    pinElement.querySelector('img').alt = point.offer.title;
+    fragment.appendChild(pinElement);
   };
 
   var displayPoints = function () {
@@ -63,28 +58,5 @@
     }
   };
   displayPoints();
+  pinContainer.appendChild(fragment);
 })();
-
-
-// ----------------------------------------------------------
-
-//   generatePins(pinsQuant) -> pinsArray =[pin1, pin2, ...]
-//   renderPins(pinsArray, container) {
-//   create doc.fragment
-
-//   pinsArray.forEach(function(pin, index, array) {
-
-//   })
-//   for (let index = 0; index < pinsArray.length; index++) {
-//     clone template;
-//     ? find btn in template
-//     btn.style.left = pin.location.x
-
-//     const pin = pinsArray[index];
-//     img. src = pin.author.avatar
-
-//     doc.fragment <- button
-//   }
-
-//   container <- fragment
-// }
