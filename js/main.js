@@ -20,6 +20,11 @@
     return imgLink;
   }
 
+  function getRandomPhoto() {
+    var photoLink = 'http://o0.github.io/assets/images/tokyo/hotel' + getRandomIntInclusive(1, 3) + '.jpg';
+    return photoLink;
+  }
+
   function getRandomElement(item) {
     var randomElement = item[Math.floor(Math.random() * item.length)];
     return randomElement;
@@ -36,11 +41,11 @@
   }
 
   function displayPoints() {
-    var types = ['palace', 'flat', 'house', 'bungalo'];
-    var timeList = ['12:00', '13:00', '14:00'];
-    var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-    var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-    var pharaseMix = ['с красивым видом', 'с большой кухней', 'в центре Токио', 'рядом с метро', 'со всеми удобствами', 'на тихой улице'];
+    var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+    var TIME_LIST = ['12:00', '13:00', '14:00'];
+    var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+    var PHRASE_MIX = ['с красивым видом', 'с большой кухней', 'в центре Токио', 'рядом с метро', 'со всеми удобствами', 'на тихой улице'];
+    var SHIFT_X = '25';
 
     for (var i = 0; i < 8; i++) {
       var pinPoint = {
@@ -48,20 +53,20 @@
           avatar: getRandomImg(),
         },
         offer: {
-          title: 'Квартира ' + getRandomElement(pharaseMix),
-          address: getRandomIntInclusive(0, 1150) + ', ' + getRandomIntInclusive(60, 630),
+          title: 'Квартира ' + getRandomElement(PHRASE_MIX),
+          address: location.left + location.top,
           price: getRandomIntInclusive(25, 250),
-          type: getRandomElement(types),
+          type: getRandomElement(TYPES),
           rooms: getRandomIntInclusive(1, 4),
           guests: getRandomIntInclusive(1, 4),
-          checkin: getRandomElement(timeList),
-          checkout: getRandomElement(timeList),
-          features: getRandomElement(features),
-          description: getRandomElement(pharaseMix) + ', ' + getRandomElement(pharaseMix),
-          photos: getRandomElement(photos)
+          checkin: getRandomElement(TIME_LIST),
+          checkout: getRandomElement(TIME_LIST),
+          features: getRandomElement(FEATURES),
+          description: getRandomElement(PHRASE_MIX) + ', ' + getRandomElement(PHRASE_MIX),
+          photos: getRandomPhoto()
         },
         location: {
-          left: 'left: ' + getRandomIntInclusive(25, 1175) + 'px; ',
+          left: 'left: ' + (getRandomIntInclusive(25, 1175) - SHIFT_X) + 'px; ',
           top: ' top: ' + getRandomIntInclusive(60, 630) + 'px'
         }
       };
