@@ -25,16 +25,23 @@
     return photoLink;
   }
 
+  // function getRandomLocation(placement, shift, min, max) {
+  //   var randomLocation = placement + (getRandomIntInclusive(min, max) - shift) + 'px; ';
+  //   return randomLocation;
+  // }
+
   function getRandomElement(item) {
     var randomElement = item[Math.floor(Math.random() * item.length)];
     return randomElement;
   }
 
   function renderPins(point) {
+    var SHIFT_X = '25';
+    var SHIFT_Y = '70';
     var pinTemplate = document.querySelector('#pin').content;
 
     var pinElement = pinTemplate.cloneNode(true);
-    pinElement.querySelector('.map__pin').style = point.location.left + point.location.top;
+    pinElement.querySelector('.map__pin').style = 'left: ' + (point.location.x - SHIFT_X) + 'px;' + 'top: ' + (point.location.y - SHIFT_Y) + 'px; ';
     pinElement.querySelector('img').src = point.author.avatar;
     pinElement.querySelector('img').alt = point.offer.title;
     fragment.appendChild(pinElement);
@@ -44,8 +51,8 @@
     var TYPES = ['palace', 'flat', 'house', 'bungalo'];
     var TIME_LIST = ['12:00', '13:00', '14:00'];
     var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-    var PHRASE_MIX = ['с красивым видом', 'с большой кухней', 'в центре Токио', 'рядом с метро', 'со всеми удобствами', 'на тихой улице'];
-    var SHIFT_X = '25';
+    var PHRASE_MIX = ['Квартира с красивым видом', 'Квартира с большой кухней', 'Квартира в центре Токио', 'Квартира рядом с метро', 'Квартира со всеми удобствами', 'Квартира на тихой улице'];
+
 
     for (var i = 0; i < 8; i++) {
       var pinPoint = {
@@ -53,8 +60,8 @@
           avatar: getRandomImg(),
         },
         offer: {
-          title: 'Квартира ' + getRandomElement(PHRASE_MIX),
-          address: location.left + location.top,
+          title: getRandomElement(PHRASE_MIX),
+          address: location.x + location.y,
           price: getRandomIntInclusive(25, 250),
           type: getRandomElement(TYPES),
           rooms: getRandomIntInclusive(1, 4),
@@ -66,8 +73,8 @@
           photos: getRandomPhoto()
         },
         location: {
-          left: 'left: ' + (getRandomIntInclusive(25, 1175) - SHIFT_X) + 'px; ',
-          top: ' top: ' + getRandomIntInclusive(60, 630) + 'px'
+          x: getRandomIntInclusive(25, 1175),
+          y: getRandomIntInclusive(130, 630)
         }
       };
       renderPins(pinPoint);
