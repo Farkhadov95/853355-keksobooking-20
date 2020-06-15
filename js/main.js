@@ -20,16 +20,6 @@
     return photoLink;
   }
 
-  function getRandomLocationX() {
-    var locationX = getRandomIntInclusive(25, 1175);
-    return locationX;
-  }
-
-  function getRandomLocationY() {
-    var locationY = getRandomIntInclusive(130, 630);
-    return locationY;
-  }
-
   function getRandomElement(item) {
     var randomElement = item[Math.floor(Math.random() * item.length)];
     return randomElement;
@@ -65,7 +55,7 @@
     popupPrice.textContent = card.offer.price + ' ₽/ночь';
 
     var popupType = offerElement.querySelector('.popup__type');
-    popupType.textContent = card.offer.type;
+    popupType.textContent = translateType(card.offer.type);
 
     var popupCapacity = offerElement.querySelector('.popup__text--capacity');
     popupCapacity.textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests;
@@ -88,22 +78,51 @@
     map.insertBefore(offerElement, mapFilter);
   }
 
+  function translateType(word) {
+    switch (word) {
+      case 'palace': word = 'Дворец';
+        break;
+      case 'flat': word = 'Квартира';
+        break;
+      case 'house': word = 'Дом';
+        break;
+      case 'bungalo': word = 'Бунгало';
+        break;
+    }
+    return word;
+  }
+
+  function getCorrectAddressX(element) {
+    var CorrectAddressX = element - 25;
+    return CorrectAddressX;
+  }
+
+  function getCorrectAddressY(element) {
+    var CorrectAddressY = element - 70;
+    return CorrectAddressY;
+  }
+
 
   function displayPoints() {
-    var TYPES = ['Дворец ', 'Квартира ', 'Дом ', 'Бунгало'];
+    var TYPES = ['palace', 'flat', 'house', 'bungalo'];
     var TIME_LIST = ['12:00', '13:00', '14:00'];
     var FEATURES = [' wifi', ' dishwasher', ' parking', ' washer', ' elevator', ' conditioner'];
     var PHRASE_MIX = ['Красивый вид', 'Большая кухня', 'В центре Токио', 'Рядом с метро', 'Со всеми удобствами', 'На тихой улице'];
 
 
     for (var i = 0; i < 8; i++) {
+      var locationX = getRandomIntInclusive(25, 1175);
+      var locationY = getRandomIntInclusive(130, 630);
+      var trueAddressX = getCorrectAddressX(locationX);
+      var trueAddressY = getCorrectAddressY(locationY);
+
       var pinPoint = {
         author: {
           avatar: getRandomImg(),
         },
         offer: {
           title: getRandomElement(PHRASE_MIX),
-          address: getRandomLocationX() + ', ' + getRandomLocationY(),
+          address: trueAddressX + ', ' + trueAddressY,
           price: getRandomIntInclusive(25, 10000),
           type: getRandomElement(TYPES),
           rooms: getRandomIntInclusive(2, 4),
@@ -115,10 +134,11 @@
           photos: getRandomPhoto()
         },
         location: {
-          x: getRandomLocationX(),
-          y: getRandomLocationY()
+          x: locationX,
+          y: locationY
         }
       };
+
       renderPins(pinPoint);
       renderCards(pinPoint);
     }
