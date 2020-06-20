@@ -7,6 +7,7 @@
   var adForm = document.querySelector('.ad-form');
   var mapFilters = document.querySelector('.map__filters');
   var housingFeatures = mapFilters.querySelector('#housing-features');
+  var adFormHeader = adForm.querySelector('.ad-form-header');
   var adFormElements = adForm.querySelectorAll('.ad-form__element');
   var mapFiltersSet = mapFilters.querySelectorAll('select');
 
@@ -14,25 +15,26 @@
   var PIN_SHIFT_X = 31;
   var PIN_SHIFT_Y = 53;
 
-  function disableAll(element, status) {
-    for (var i = 0; i < element.length; i++) {
-      element[i].disabled = status;
+  function disableAll(elements, status) {
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].disabled = status;
     }
   }
 
 
   function deactiveteForm() {
     housingFeatures.disabled = true;
+    adFormHeader.disabled = true;
     disableAll(adFormElements, true);
     disableAll(mapFiltersSet, true);
     mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
   }
-  deactiveteForm();
 
   function activateForm() {
     document.querySelector('.map').classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     housingFeatures.disabled = false;
+    adFormHeader.disabled = false;
     disableAll(adFormElements, false);
     disableAll(mapFiltersSet, false);
   }
@@ -50,7 +52,7 @@
 
     mainAddress.value = (mainPin.offsetLeft + PIN_SHIFT_X) + ', ' + (mainPin.offsetTop + PIN_SHIFT_Y);
 
-    var onMouseMove = function (moveEvt) {
+    function onMouseMove(moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
@@ -66,14 +68,14 @@
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
       mainAddress.value = (mainPin.offsetLeft - shift.x + PIN_SHIFT_X) + ', ' + (mainPin.offsetTop - shift.y + PIN_SHIFT_Y);
-    };
+    }
 
-    var onMouseUp = function (upEvt) {
+    function onMouseUp(upEvt) {
       upEvt.preventDefault();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-    };
+    }
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -246,6 +248,7 @@
     pinContainer.appendChild(fragment);
   }
 
+  deactiveteForm();
   displayPoints();
 
 })();
