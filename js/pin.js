@@ -11,6 +11,7 @@ window.movePin = function () {
     if (evt.button === 0) {
       evt.preventDefault();
       window.activateForm();
+      window.load(window.successHandler, window.errorHandler);
     }
 
     var startCoords = {
