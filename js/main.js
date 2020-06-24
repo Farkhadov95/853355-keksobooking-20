@@ -10,6 +10,5 @@
 
   window.movePin();
   window.deactiveteForm();
-  window.displayPoints();
 
 })();
