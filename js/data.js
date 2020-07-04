@@ -1,27 +1,42 @@
 'use strict';
 (function () {
-  var pinContainer = document.querySelector('.map__pins');
-  var MAX_PIN = 8;
+  var mapFilters = document.querySelector('.map__filters');
+  var housingType = mapFilters.querySelector('#housing-type');
+  var points = [];
+  var type = 'palace';
+  var price = 100;
+  var rooms = 35;
+  var guests = 93;
 
-  window.renderPins = function (point) {
-    var SHIFT_X = '25';
-    var SHIFT_Y = '70';
-    var pinTemplate = document.querySelector('#pin').content;
+  window.successHandler = function (data) {
+    points = data;
+    window.activateFilters();
+    window.filterPins();
 
-    var pinElement = pinTemplate.cloneNode(true);
-    pinElement.querySelector('.map__pin').style = 'left: ' + (point.location.x - SHIFT_X) + 'px;' + 'top: ' + (point.location.y - SHIFT_Y) + 'px; ';
-    pinElement.querySelector('img').src = point.author.avatar;
-    pinElement.querySelector('img').alt = point.offer.title;
-    return pinElement;
+    housingType.addEventListener('change', function () {
+      var housingOption = housingType.value;
+      return housingOption;
+    });
   };
 
-  window.successHandler = function (points) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < MAX_PIN; i++) {
-      fragment.appendChild(window.renderPins(points[i]));
-    }
-    pinContainer.appendChild(fragment);
+  window.filterPins = function () {
+    var filteredHousingType = points.filter(function (it) {
+      return it.offer.type === type;
+    });
+    var filteredHousingPrice = points.filter(function (it) {
+      return it.offer.price === price;
+    });
+    var filteredHousingRooms = points.filter(function (it) {
+      return it.offer.rooms === rooms;
+    });
+    var filteredHousingGuests = points.filter(function (it) {
+      return it.offer.rooms === guests;
+    });
+    window.renderPins(filteredHousingType
+    .concat(filteredHousingPrice)
+    .concat(filteredHousingRooms)
+    .concat(filteredHousingGuests)
+    );
   };
 
   window.errorHandler = function (errorMessage) {
@@ -34,6 +49,12 @@
 
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
+
+    document.addEventListener('keydown', function (ESCevt) {
+      if (ESCevt.keyCode === 27) {
+        node.remove();
+      }
+    });
   };
 
 })();

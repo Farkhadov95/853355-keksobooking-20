@@ -29,6 +29,9 @@
     housingFeatures.disabled = false;
     adFormHeader.disabled = false;
     disableAll(adFormElements, false);
+  };
+
+  window.activateFilters = function () {
     disableAll(mapFiltersSet, false);
   };
 

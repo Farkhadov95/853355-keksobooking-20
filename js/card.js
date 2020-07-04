@@ -2,10 +2,20 @@
 (function () {
   window.renderCards = function (card) {
     var map = document.querySelector('.map');
-
     var mapFilter = document.querySelector('.map__filters-container');
     var offerTemplate = document.querySelector('#card').content;
     var offerElement = offerTemplate.cloneNode(true);
+    var closePopup = offerTemplate.querySelector('.popup__close');
+
+    closePopup.addEventListener('click', function () {
+      alert('red');
+    });
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === 27) {
+        alert('red');
+      }
+    });
 
     var popupTitle = offerElement.querySelector('.popup__title');
     popupTitle.textContent = card.offer.title;
@@ -33,10 +43,17 @@
 
     var popupPhotos = offerElement.querySelector('.popup__photos');
     var popupPhoto = popupPhotos.querySelector('.popup__photo');
-    popupPhoto.src = card.offer.photos;
+
+    var photosArray = card.offer.photos;
+    for (var i = 0; i < photosArray.length; i++) {
+      var photosElement = popupPhoto.cloneNode(true);
+      photosElement.src = photosArray[i];
+      popupPhotos.appendChild(photosElement);
+    }
 
     var popupAvatar = offerElement.querySelector('.popup__avatar');
     popupAvatar.src = card.author.avatar;
+
     map.insertBefore(offerElement, mapFilter);
   };
 
@@ -53,5 +70,11 @@
     }
     return word;
   };
+
+  // var closePopups = document.querySelector('.popup__close');
+
+  // closePopups.addEventListener('click', function () {
+  //   console.log('red!');
+  // });
 
 })();
