@@ -1,43 +1,30 @@
 'use strict';
 (function () {
-  var mapFilters = document.querySelector('.map__filters');
-  var housingType = mapFilters.querySelector('#housing-type');
-  var points = [];
-  var type = 'palace';
-  var price = 100;
-  var rooms = 35;
-  var guests = 93;
+  window.points = [];
+  var housingType = 'types-any';
+  var housingPrice = 'prices-any';
+  var housingRoom = 'rooms-any';
+  var housingGuest = 'guests-any';
+
+  // var pinContainer = document.querySelector('.map__pins');
+  // var allPins = pinContainer.children;
+  // var showCard = function () {
+  //   for (var k = 0; k < allPins.length; k++) {
+  //     allPins[k].addEventListener('click', function (evt) {
+  //       console.log(evt.target);
+  //     });
+  //   }
+  // };
+
 
   window.successHandler = function (data) {
-    points = data;
+    window.points = data;
     window.activateFilters();
-    window.filterPins();
-
-    housingType.addEventListener('change', function () {
-      var housingOption = housingType.value;
-      return housingOption;
-    });
+    window.filterPins(housingType, housingPrice, housingRoom, housingGuest);
+    // showCard();
+    // console.log(allPins);
   };
 
-  window.filterPins = function () {
-    var filteredHousingType = points.filter(function (it) {
-      return it.offer.type === type;
-    });
-    var filteredHousingPrice = points.filter(function (it) {
-      return it.offer.price === price;
-    });
-    var filteredHousingRooms = points.filter(function (it) {
-      return it.offer.rooms === rooms;
-    });
-    var filteredHousingGuests = points.filter(function (it) {
-      return it.offer.rooms === guests;
-    });
-    window.renderPins(filteredHousingType
-    .concat(filteredHousingPrice)
-    .concat(filteredHousingRooms)
-    .concat(filteredHousingGuests)
-    );
-  };
 
   window.errorHandler = function (errorMessage) {
     var node = document.createElement('div');
@@ -58,4 +45,3 @@
   };
 
 })();
-
