@@ -33,6 +33,7 @@
 
     var popupPhotos = offerElement.querySelector('.popup__photos');
     var popupPhoto = popupPhotos.querySelector('.popup__photo');
+    var allPhotos = popupPhotos.querySelectorAll('.popup__photo');
 
     var photosArray = card.offer.photos;
     for (var i = 0; i < photosArray.length; i++) {
@@ -41,17 +42,43 @@
       popupPhotos.appendChild(photosElement);
     }
 
+    allPhotos[0].remove();
+
     var popupAvatar = offerElement.querySelector('.popup__avatar');
     popupAvatar.src = card.author.avatar;
 
     map.insertBefore(offerElement, mapFilter);
 
-    // var closePopup = map.querySelectorAll('.popup__close');
-    // for (var j = 0; j < closePopup.length; j++) {
-    //   closePopup[j].addEventListener('click', function () {
-    //     photosElement.classList.add('hidden');
-    //   });
-    // }
+    var mapCard = document.querySelector('.map__card');
+    var closePopup = mapCard.querySelector('.popup__close');
+    closePopup.addEventListener('click', function () {
+      mapCard.remove();
+    });
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === 27) {
+        mapCard.remove();
+      }
+    });
+  };
+
+  var pinContainer = document.querySelector('.map__pins');
+
+  window.closeCardAuto = function () {
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  };
+
+  window.showCard = function () {
+    var allPins = pinContainer.querySelectorAll('.map__pin');
+    for (var k = 0; k < allPins.length; k++) {
+      allPins[k].addEventListener('click', function (evt) {
+        window.closeCardAuto();
+        window.renderCards(window.points[evt.currentTarget.dataset.id]);
+      });
+    }
   };
 
   var translateType = function (word) {
@@ -67,33 +94,4 @@
     }
     return word;
   };
-
-  // var mapCards = document.querySelectorAll('.map__card');
-
-
-  // var closePopup = document.querySelectorAll('.popup__close');
-
-  // closePopup.addEventListener('click', function () {
-  //   alert('red');
-  // });
-
-  // document.addEventListener('keydown', function (evt) {
-  //   if (evt.keyCode === 27) {
-  //     alert('red');
-  //   }
-  // });
-
-  // var pinContainer = document.querySelector('.map__pins');
-  // var allPins = pinContainer.children;
-  // console.log(allPins);
-  // allPins.addEventListener('click', function () {
-  //   alert('red');
-  // });
-
-  // // allPins.addEventListener('click', function () {
-  // // });
-  // var closePopup = pinContainer.querySelectorAll('.popup__close');
-  // closePopup.addEventListener('click', function () {
-  //   alert('red');
-  // });
 })();

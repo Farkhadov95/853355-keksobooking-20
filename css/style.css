@@ -1078,6 +1078,7 @@ fieldset {
 
 .popup__features {
   margin-bottom: 10px;
+  overflow: hidden;
 }
 
 .popup__feature {

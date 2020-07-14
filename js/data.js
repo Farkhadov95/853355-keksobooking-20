@@ -6,23 +6,13 @@
   var housingRoom = 'rooms-any';
   var housingGuest = 'guests-any';
 
-  // var pinContainer = document.querySelector('.map__pins');
-  // var allPins = pinContainer.children;
-  // var showCard = function () {
-  //   for (var k = 0; k < allPins.length; k++) {
-  //     allPins[k].addEventListener('click', function (evt) {
-  //       console.log(evt.target);
-  //     });
-  //   }
-  // };
-
-
   window.successHandler = function (data) {
     window.points = data;
+    window.points.forEach(function (p, ind) {
+      p.id = ind;
+    });
     window.activateFilters();
     window.filterPins(housingType, housingPrice, housingRoom, housingGuest);
-    // showCard();
-    // console.log(allPins);
   };
 
 

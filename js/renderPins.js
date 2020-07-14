@@ -7,42 +7,22 @@
     var SHIFT_Y = '70';
     var pinTemplate = document.querySelector('#pin').content;
     var fragment = document.createDocumentFragment();
+
     var MAX_LENGTH = 5;
     pinContainer.innerHTML = '';
     for (var i = 0; (i < filteredPoints.length) && (i < MAX_LENGTH); i++) {
       var pinElement = pinTemplate.cloneNode(true);
+      var pinImage = pinElement.querySelector('img');
+      var pinButton = pinElement.querySelector('button');
       pinElement.querySelector('.map__pin').style = 'left: ' + (filteredPoints[i].location.x - SHIFT_X) + 'px;' + 'top: ' + (filteredPoints[i].location.y - SHIFT_Y) + 'px; ';
-      pinElement.querySelector('.map__pin').style = 'left: ' + (filteredPoints[i].location.x - SHIFT_X) + 'px;' + 'top: ' + (filteredPoints[i].location.y - SHIFT_Y) + 'px; ';
-      pinElement.querySelector('img').src = filteredPoints[i].author.avatar;
-      pinElement.querySelector('img').alt = filteredPoints[i].offer.title;
-      // pinElement.addEventListener('click', function () {
-      //   window.renderCards(filteredPoints[i]);
-      // });
+      pinImage.src = filteredPoints[i].author.avatar;
+      pinImage.alt = filteredPoints[i].offer.title;
+      pinButton.dataset.id = filteredPoints[i].id;
+      // img.dataset.id = 4  /js/ ==== <img data-id="4"> /html/
       fragment.appendChild(pinElement);
     }
     pinContainer.appendChild(fragment);
+    window.showCard();
   };
-  // var clickHandler = function (e) {
-  //   // window.renderCards(points[1]);
-  //   // pinContainer.indexOf(e.target);
-  //   console.log(e.target);
-  // };
-
-
-  // pinContainer.addEventListener('click', function (e) {
-
-  //   if (e.target === 'map__pin' && e.target !== 'map__pin--main') {
-  //     console.log(e.target);
-  //   } else {
-  //     console.log('Это не кнопка!');
-  //   }
-  // });
-
-
-  // var availablePins = pinContainer.querySelectorAll('.map__pin');
-  // availablePins.addEventListener('click', function () {
-  //   console.log('1111');
-  // });
-
 
 })();
