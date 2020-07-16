@@ -22,6 +22,7 @@
     }
     window.closeCardAuto();
     window.filterPins(housingType, housingPrice, housingRoom, housingGuest);
+
   });
 
   window.filterPins = function (requiredType, requiredPrice, requiredRooms, requiredGuests) {

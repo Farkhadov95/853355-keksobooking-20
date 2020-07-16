@@ -73,7 +73,7 @@
 
   window.showCard = function () {
     var allPins = pinContainer.querySelectorAll('.map__pin');
-    for (var k = 0; k < allPins.length; k++) {
+    for (var k = 1; k < allPins.length; k++) {
       allPins[k].addEventListener('click', function (evt) {
         window.closeCardAuto();
         window.renderCards(window.points[evt.currentTarget.dataset.id]);

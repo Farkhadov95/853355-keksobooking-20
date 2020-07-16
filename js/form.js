@@ -48,4 +48,45 @@
     }
   };
 
+
+  var typeInput = adForm.querySelector('#type');
+  typeInput.addEventListener('change', function (evt) {
+    minPriceOnHousingType(evt.target.value);
+  });
+
+
+  var minPriceOnHousingType = function (type) {
+    var priceInput = adForm.querySelector('#price');
+    switch (type) {
+      case 'bungalo':
+        priceInput.min = 0;
+        priceInput.placeholder = 0;
+        break;
+      case 'flat':
+        priceInput.min = 1000;
+        priceInput.placeholder = 1000;
+        break;
+      case 'house':
+        priceInput.min = 5000;
+        priceInput.placeholder = 5000;
+        break;
+      case 'palace':
+        priceInput.min = 10000;
+        priceInput.placeholder = 10000;
+        break;
+    }
+  };
+
+  var timeIn = adForm.querySelector('#timein');
+  var timeOut = adForm.querySelector('#timeout');
+  var syncInAndOut = function (changeWhat, syncWhat) {
+    changeWhat.addEventListener('change', function (evt) {
+      syncWhat.value = evt.target.value;
+    });
+  };
+
+  syncInAndOut(timeIn, timeOut);
+  syncInAndOut(timeOut, timeIn);
+
+
 })();
