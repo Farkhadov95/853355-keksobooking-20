@@ -8,6 +8,17 @@
   var adFormElements = adForm.querySelectorAll('.ad-form__element');
   var mapFiltersSet = mapFilters.querySelectorAll('select');
   var mainAddress = adForm.querySelector('#address');
+  var map = document.querySelector('.map');
+  var pinContainer = document.querySelector('.map__container');
+  var mapFiltersArray = mapFilters.querySelectorAll('select');
+  var adSelectsArray = adForm.querySelectorAll('select');
+  var adSelectType = adForm.querySelector('#type');
+  var priceInput = adForm.querySelector('#price');
+  var roomsQuantity = adForm.querySelector('#room_number');
+  var guestQuantity = adForm.querySelector('#capacity');
+  var typeInput = adForm.querySelector('#type');
+  var successPopup = document.querySelector('#success').content;
+  var mainSection = document.querySelector('main');
 
   var disableAll = function (elements, status) {
     for (var i = 0; i < elements.length; i++) {
@@ -16,15 +27,28 @@
   };
 
   window.deactiveteForm = function () {
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+    pinContainer.innerHTML = '';
     housingFeatures.disabled = true;
     adFormHeader.disabled = true;
     disableAll(adFormElements, true);
     disableAll(mapFiltersSet, true);
+    window.closeCardAuto();
     mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
+
+    mapFiltersArray.forEach(function (item) {
+      item.selectedIndex = '0';
+    });
+    adSelectsArray.forEach(function (item) {
+      item.selectedIndex = '0';
+    });
+    adSelectType.selectedIndex = '1';
+    priceInput.placeholder = '1000';
   };
 
   window.activateForm = function () {
-    document.querySelector('.map').classList.remove('map--faded');
+    map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     housingFeatures.disabled = false;
     adFormHeader.disabled = false;
@@ -35,12 +59,8 @@
     disableAll(mapFiltersSet, false);
   };
 
-  var roomsQuantity = adForm.querySelector('#room_number');
-  var guestQuantity = adForm.querySelector('#capacity');
-
-  window.compareRoomsToGuests = function (evt) {
+  window.compareRoomsToGuests = function () {
     if (roomsQuantity.value < guestQuantity.value) {
-      evt.preventDefault();
       roomsQuantity.setCustomValidity('Количество комнат не достаточно для данного количества гостей');
       roomsQuantity.reportValidity();
     } else {
@@ -48,15 +68,11 @@
     }
   };
 
-
-  var typeInput = adForm.querySelector('#type');
   typeInput.addEventListener('change', function (evt) {
     minPriceOnHousingType(evt.target.value);
   });
 
-
   var minPriceOnHousingType = function (type) {
-    var priceInput = adForm.querySelector('#price');
     switch (type) {
       case 'bungalo':
         priceInput.min = 0;
@@ -77,6 +93,30 @@
     }
   };
 
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    if (roomsQuantity.value < guestQuantity.value) {
+      roomsQuantity.setCustomValidity('Количество комнат не достаточно для данного количества гостей');
+      roomsQuantity.reportValidity();
+    } else {
+      roomsQuantity.setCustomValidity('');
+      window.compareRoomsToGuests();
+      var successNotification = successPopup.cloneNode(true);
+      mainSection.appendChild(successNotification);
+
+      var successNotificationBlock = document.querySelector('.success');
+      if (successNotificationBlock) {
+        document.addEventListener('keydown', function (evtKey) {
+          if (evtKey.keyCode === 27) {
+            successNotificationBlock.remove();
+            window.deactiveteForm();
+            adForm.reset();
+          }
+        });
+      }
+    }
+  });
+
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
   var syncInAndOut = function (changeWhat, syncWhat) {
@@ -88,5 +128,11 @@
   syncInAndOut(timeIn, timeOut);
   syncInAndOut(timeOut, timeIn);
 
+
+  var resetButton = adForm.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', function () {
+    window.deactiveteForm();
+    adForm.reset();
+  });
 
 })();

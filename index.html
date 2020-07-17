@@ -106,7 +106,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес</label>
-          <input id="address" name="address" type="text" disabled>
+          <input id="address" name="address" type="text" readonly>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -118,8 +118,8 @@
           </select>
         </fieldset>
         <fieldset class="ad-form__element">
-          <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-          <input id="price" name="price" type="number" placeholder="1000" max="1000000" required>
+          <label class="ad-fo rm__label" for="price">Цена за ночь, руб.</label>
+          <input id="price" name="price" type="number" placeholder="1000" min="1000" max="1000000" required>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time">
           <label class="ad-form__label" for="timein">Время заезда и выезда</label>
@@ -136,7 +136,7 @@
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="room_number">Количество комнат</label>
-          <select id="room_number" name="rooms">
+          <select id="room_number" name="rooms" required>
             <option value="1" selected>1 комната</option>
             <option value="2">2 комнаты</option>
             <option value="3">3 комнаты</option>
@@ -175,7 +175,7 @@
           <label class="ad-form__label">Фотография жилья</label>
           <div class="ad-form__photo-container">
             <div class="ad-form__upload">
-              <input type="file" id="images" name="images" class="ad-form__input visually-hidden" accept="image/png, image/jpeg">
+              <input type="file" id="images" name="images" class="ad-form__input visually-hidden" accept="image/*">
               <label for="images" class="ad-form__drop-zone">Загрузить<br>фото...</label>
             </div>
             <div class="ad-form__photo"></div>
