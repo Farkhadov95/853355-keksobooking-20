@@ -5,6 +5,12 @@
   var housingPrice = 'prices-any';
   var housingRoom = 'rooms-any';
   var housingGuest = 'guests-any';
+  var featureWifi;
+  var featureDishwasher;
+  var featureParking;
+  var featureWasher;
+  var featureElevator;
+  var featureConditioner;
 
   window.successHandler = function (data) {
     window.points = data;
@@ -12,7 +18,7 @@
       p.id = ind;
     });
     window.activateFilters();
-    window.filterPins(housingType, housingPrice, housingRoom, housingGuest);
+    window.filterPins(housingType, housingPrice, housingRoom, housingGuest, featureWifi, featureDishwasher, featureParking, featureWasher, featureElevator, featureConditioner);
   };
 
 

@@ -23,7 +23,7 @@
     popupCapacity.textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests;
 
     var popupTime = offerElement.querySelector('.popup__text--time');
-    popupTime.textContent = 'Заезд после ' + card.offer.checkin + ', выезд до' + card.offer.checkout;
+    popupTime.textContent = 'заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
 
     var popupFeatures = offerElement.querySelector('.popup__features');
     popupFeatures.textContent = card.offer.features;

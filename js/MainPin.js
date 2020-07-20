@@ -8,7 +8,7 @@ window.movePin = function () {
   var PIN_SHIFT_Y = 53;
 
   mainPin.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) {
+    if (evt.button === 0 && mainPin.dataset.isActive === 'false') {
       evt.preventDefault();
       window.activateForm();
       window.load(window.successHandler, window.errorHandler);
@@ -34,9 +34,25 @@ window.movePin = function () {
         y: moveEvt.clientY
       };
 
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      var newLocation = {
+        x: (mainPin.offsetLeft - shift.x),
+        y: (mainPin.offsetTop - shift.y)
+      };
+
+      if (newLocation.y < 77) {
+        newLocation.y = 77;
+      } else if (newLocation.y > 630) {
+        newLocation.y = 630;
+      } else if (newLocation.x < -32) {
+        newLocation.x = -32;
+      } else if (newLocation.x > 1168) {
+        newLocation.x = 1168;
+      }
+
+      mainPin.style.top = newLocation.y + 'px';
+      mainPin.style.left = newLocation.x + 'px';
       mainAddress.value = (mainPin.offsetLeft - shift.x + PIN_SHIFT_X) + ', ' + (mainPin.offsetTop - shift.y + PIN_SHIFT_Y);
+
     };
 
     var onMouseUp = function (upEvt) {
@@ -50,10 +66,12 @@ window.movePin = function () {
     document.addEventListener('mouseup', onMouseUp);
   });
 
+  mainPin.focus();
   mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 13) {
+    if (evt.keyCode === 13 && mainPin.dataset.isActive === 'false') {
       evt.preventDefault();
       window.activateForm();
+      window.load(window.successHandler, window.errorHandler);
     }
   });
 

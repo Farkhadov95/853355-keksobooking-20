@@ -17,8 +17,8 @@
   var roomsQuantity = adForm.querySelector('#room_number');
   var guestQuantity = adForm.querySelector('#capacity');
   var typeInput = adForm.querySelector('#type');
-  var successPopup = document.querySelector('#success').content;
-  var mainSection = document.querySelector('main');
+  var timeIn = adForm.querySelector('#timein');
+  var timeOut = adForm.querySelector('#timeout');
 
   var disableAll = function (elements, status) {
     for (var i = 0; i < elements.length; i++) {
@@ -45,6 +45,9 @@
     });
     adSelectType.selectedIndex = '1';
     priceInput.placeholder = '1000';
+
+    mainPin.dataset.isActive = false;
+
   };
 
   window.activateForm = function () {
@@ -53,20 +56,43 @@
     housingFeatures.disabled = false;
     adFormHeader.disabled = false;
     disableAll(adFormElements, false);
+    mainPin.dataset.isActive = true;
+
   };
+
 
   window.activateFilters = function () {
     disableAll(mapFiltersSet, false);
   };
 
   window.compareRoomsToGuests = function () {
-    if (roomsQuantity.value < guestQuantity.value) {
-      roomsQuantity.setCustomValidity('Количество комнат не достаточно для данного количества гостей');
+    var roomsNumber = parseInt(roomsQuantity.value, 10);
+    var guestNumber = parseInt(guestQuantity.value, 10);
+    if (roomsNumber < guestNumber) {
+      roomsQuantity.setCustomValidity('Количество комнат недостаточно для данного количества гостей');
       roomsQuantity.reportValidity();
+    } else if (roomsNumber > guestNumber) {
+      roomsQuantity.setCustomValidity('Это количество комнат недоступно для гостей');
     } else {
       roomsQuantity.setCustomValidity('');
     }
   };
+
+  var syncInAndOut = function (changeWhat, syncWhat) {
+    changeWhat.addEventListener('change', function (evt) {
+      syncWhat.value = evt.target.value;
+    });
+  };
+
+  syncInAndOut(timeIn, timeOut);
+  syncInAndOut(timeOut, timeIn);
+
+
+  var resetButton = adForm.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', function () {
+    window.deactiveteForm();
+    adForm.reset();
+  });
 
   typeInput.addEventListener('change', function (evt) {
     minPriceOnHousingType(evt.target.value);
@@ -94,45 +120,9 @@
   };
 
   adForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(adForm), window.displaySuccess);
+    window.compareRoomsToGuests();
     evt.preventDefault();
-    if (roomsQuantity.value < guestQuantity.value) {
-      roomsQuantity.setCustomValidity('Количество комнат не достаточно для данного количества гостей');
-      roomsQuantity.reportValidity();
-    } else {
-      roomsQuantity.setCustomValidity('');
-      window.compareRoomsToGuests();
-      var successNotification = successPopup.cloneNode(true);
-      mainSection.appendChild(successNotification);
-
-      var successNotificationBlock = document.querySelector('.success');
-      if (successNotificationBlock) {
-        document.addEventListener('keydown', function (evtKey) {
-          if (evtKey.keyCode === 27) {
-            successNotificationBlock.remove();
-            window.deactiveteForm();
-            adForm.reset();
-          }
-        });
-      }
-    }
-  });
-
-  var timeIn = adForm.querySelector('#timein');
-  var timeOut = adForm.querySelector('#timeout');
-  var syncInAndOut = function (changeWhat, syncWhat) {
-    changeWhat.addEventListener('change', function (evt) {
-      syncWhat.value = evt.target.value;
-    });
-  };
-
-  syncInAndOut(timeIn, timeOut);
-  syncInAndOut(timeOut, timeIn);
-
-
-  var resetButton = adForm.querySelector('.ad-form__reset');
-  resetButton.addEventListener('click', function () {
-    window.deactiveteForm();
-    adForm.reset();
   });
 
 })();

@@ -6,7 +6,6 @@
 
   roomsQuantity.addEventListener('change', window.compareRoomsToGuests);
   guestQuantity.addEventListener('change', window.compareRoomsToGuests);
-  // adForm.addEventListener('submit', window.compareRoomsToGuests);
 
   window.movePin();
   window.deactiveteForm();

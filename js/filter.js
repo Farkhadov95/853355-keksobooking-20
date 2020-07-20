@@ -9,6 +9,13 @@
   var housingPrice = 'prices-any';
   var housingRoom = 'rooms-any';
   var housingGuest = 'guests-any';
+  var featureWifi = false;
+  var featureDishwasher = false;
+  var featureParking = false;
+  var featureWasher = false;
+  var featureElevator = false;
+  var featureConditioner = false;
+  var DEBOUNCE_INTERVAL = 500;
 
   mapFilters.addEventListener('change', function (evt) {
     if (housingTypes.includes(evt.target.value)) {
@@ -19,13 +26,45 @@
       housingRoom = evt.target.value;
     } else if (housingGuests.includes(evt.target.value)) {
       housingGuest = evt.target.value;
+    } else if (evt.target.value === 'wifi' && evt.target.checked) {
+      featureWifi = true;
+    } else if (evt.target.value === 'wifi' && !evt.target.checked) {
+      featureWifi = false;
+    } else if (evt.target.value === 'dishwasher' && evt.target.checked) {
+      featureDishwasher = true;
+    } else if (evt.target.value === 'dishwasher' && !evt.target.checked) {
+      featureDishwasher = false;
+    } else if (evt.target.value === 'parking' && evt.target.checked) {
+      featureParking = true;
+    } else if (evt.target.value === 'parking' && !evt.target.checked) {
+      featureParking = false;
+    } else if (evt.target.value === 'washer' && evt.target.checked) {
+      featureWasher = true;
+    } else if (evt.target.value === 'washer' && !evt.target.checked) {
+      featureWasher = false;
+    } else if (evt.target.value === 'elevator' && evt.target.checked) {
+      featureElevator = true;
+    } else if (evt.target.value === 'elevator' && !evt.target.checked) {
+      featureElevator = false;
+    } else if (evt.target.value === 'conditioner' && evt.target.checked) {
+      featureConditioner = true;
+    } else if (evt.target.value === 'conditioner' && !evt.target.checked) {
+      featureConditioner = false;
     }
     window.closeCardAuto();
-    window.filterPins(housingType, housingPrice, housingRoom, housingGuest);
+
+    var lastTimeout;
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(function () {
+      window.filterPins(housingType, housingPrice, housingRoom, housingGuest, featureWifi, featureDishwasher, featureParking, featureWasher, featureElevator, featureConditioner);
+    }, DEBOUNCE_INTERVAL);
 
   });
 
-  window.filterPins = function (requiredType, requiredPrice, requiredRooms, requiredGuests) {
+  window.filterPins = function (requiredType, requiredPrice, requiredRooms, requiredGuests, requiredWifi, requiredDishwasher, requiredParking, requiredWasher, requiredElevator, requiredConditioner) {
+
     var filteredHousingType = window.points.filter(function (it) {
       if (requiredType === 'types-any') {
         return it.offer.type;
@@ -67,13 +106,55 @@
         return it.offer.guests > 0;
       }
     });
+    var filteredWifi = filteredHousingGuests.filter(function (it) {
+      if (requiredWifi) {
+        return it.offer.features.includes('wifi');
+      } else {
+        return it.offer.features;
+      }
+    });
+    var filteredDishwasher = filteredWifi.filter(function (it) {
+      if (requiredDishwasher) {
+        return it.offer.features.includes('dishwasher');
+      } else {
+        return it.offer.features;
+      }
+    });
+    var filteredParking = filteredDishwasher.filter(function (it) {
+      if (requiredParking) {
+        return it.offer.features.includes('parking');
+      } else {
+        return it.offer.features;
+      }
+    });
+    var filteredWasher = filteredParking.filter(function (it) {
+      if (requiredWasher) {
+        return it.offer.features.includes('washer');
+      } else {
+        return it.offer.features;
+      }
+    });
+    var filteredElevator = filteredWasher.filter(function (it) {
+      if (requiredElevator) {
+        return it.offer.features.includes('elevator');
+      } else {
+        return it.offer.features;
+      }
+    });
+    var filteredConditioner = filteredElevator.filter(function (it) {
+      if (requiredConditioner) {
+        return it.offer.features.includes('conditioner');
+      } else {
+        return it.offer.features;
+      }
+    });
 
-    var filteredMix = filteredHousingGuests;
+    var filteredMix = filteredConditioner;
 
     var uniquePins = filteredMix.filter(function (it, i) {
       return filteredMix.indexOf(it) === i;
     });
-    window.renderPins(uniquePins);
 
+    window.renderPins(uniquePins);
   };
 })();
