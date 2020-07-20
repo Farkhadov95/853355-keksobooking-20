@@ -23,7 +23,7 @@
     popupCapacity.textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests;
 
     var popupTime = offerElement.querySelector('.popup__text--time');
-    popupTime.textContent = 'Заезд после ' + card.offer.checkin + ', выезд до' + card.offer.checkout;
+    popupTime.textContent = 'заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
 
     var popupFeatures = offerElement.querySelector('.popup__features');
     popupFeatures.textContent = card.offer.features;
@@ -73,7 +73,7 @@
 
   window.showCard = function () {
     var allPins = pinContainer.querySelectorAll('.map__pin');
-    for (var k = 0; k < allPins.length; k++) {
+    for (var k = 1; k < allPins.length; k++) {
       allPins[k].addEventListener('click', function (evt) {
         window.closeCardAuto();
         window.renderCards(window.points[evt.currentTarget.dataset.id]);

@@ -8,6 +8,17 @@
   var adFormElements = adForm.querySelectorAll('.ad-form__element');
   var mapFiltersSet = mapFilters.querySelectorAll('select');
   var mainAddress = adForm.querySelector('#address');
+  var map = document.querySelector('.map');
+  var pinContainer = document.querySelector('.map__container');
+  var mapFiltersArray = mapFilters.querySelectorAll('select');
+  var adSelectsArray = adForm.querySelectorAll('select');
+  var adSelectType = adForm.querySelector('#type');
+  var priceInput = adForm.querySelector('#price');
+  var roomsQuantity = adForm.querySelector('#room_number');
+  var guestQuantity = adForm.querySelector('#capacity');
+  var typeInput = adForm.querySelector('#type');
+  var timeIn = adForm.querySelector('#timein');
+  var timeOut = adForm.querySelector('#timeout');
 
   var disableAll = function (elements, status) {
     for (var i = 0; i < elements.length; i++) {
@@ -16,36 +27,102 @@
   };
 
   window.deactiveteForm = function () {
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+    pinContainer.innerHTML = '';
     housingFeatures.disabled = true;
     adFormHeader.disabled = true;
     disableAll(adFormElements, true);
     disableAll(mapFiltersSet, true);
+    window.closeCardAuto();
     mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
+
+    mapFiltersArray.forEach(function (item) {
+      item.selectedIndex = '0';
+    });
+    adSelectsArray.forEach(function (item) {
+      item.selectedIndex = '0';
+    });
+    adSelectType.selectedIndex = '1';
+    priceInput.placeholder = '1000';
+
+    mainPin.dataset.isActive = false;
+
   };
 
   window.activateForm = function () {
-    document.querySelector('.map').classList.remove('map--faded');
+    map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     housingFeatures.disabled = false;
     adFormHeader.disabled = false;
     disableAll(adFormElements, false);
+    mainPin.dataset.isActive = true;
+
   };
+
 
   window.activateFilters = function () {
     disableAll(mapFiltersSet, false);
   };
 
-  var roomsQuantity = adForm.querySelector('#room_number');
-  var guestQuantity = adForm.querySelector('#capacity');
-
-  window.compareRoomsToGuests = function (evt) {
-    if (roomsQuantity.value < guestQuantity.value) {
-      evt.preventDefault();
-      roomsQuantity.setCustomValidity('Количество комнат не достаточно для данного количества гостей');
+  window.compareRoomsToGuests = function () {
+    var roomsNumber = parseInt(roomsQuantity.value, 10);
+    var guestNumber = parseInt(guestQuantity.value, 10);
+    if (roomsNumber < guestNumber) {
+      roomsQuantity.setCustomValidity('Количество комнат недостаточно для данного количества гостей');
       roomsQuantity.reportValidity();
+    } else if (roomsNumber > guestNumber) {
+      roomsQuantity.setCustomValidity('Это количество комнат недоступно для гостей');
     } else {
       roomsQuantity.setCustomValidity('');
     }
   };
+
+  var syncInAndOut = function (changeWhat, syncWhat) {
+    changeWhat.addEventListener('change', function (evt) {
+      syncWhat.value = evt.target.value;
+    });
+  };
+
+  syncInAndOut(timeIn, timeOut);
+  syncInAndOut(timeOut, timeIn);
+
+
+  var resetButton = adForm.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', function () {
+    window.deactiveteForm();
+    adForm.reset();
+  });
+
+  typeInput.addEventListener('change', function (evt) {
+    minPriceOnHousingType(evt.target.value);
+  });
+
+  var minPriceOnHousingType = function (type) {
+    switch (type) {
+      case 'bungalo':
+        priceInput.min = 0;
+        priceInput.placeholder = 0;
+        break;
+      case 'flat':
+        priceInput.min = 1000;
+        priceInput.placeholder = 1000;
+        break;
+      case 'house':
+        priceInput.min = 5000;
+        priceInput.placeholder = 5000;
+        break;
+      case 'palace':
+        priceInput.min = 10000;
+        priceInput.placeholder = 10000;
+        break;
+    }
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(adForm), window.displaySuccess);
+    window.compareRoomsToGuests();
+    evt.preventDefault();
+  });
 
 })();

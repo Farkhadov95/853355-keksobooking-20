@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var pinContainer = document.querySelector('.map__pins');
+  var pinContainer = document.querySelector('.map__container');
 
   window.renderPins = function (filteredPoints) {
     var SHIFT_X = '25';
@@ -10,6 +10,7 @@
 
     var MAX_LENGTH = 5;
     pinContainer.innerHTML = '';
+
     for (var i = 0; (i < filteredPoints.length) && (i < MAX_LENGTH); i++) {
       var pinElement = pinTemplate.cloneNode(true);
       var pinImage = pinElement.querySelector('img');
