@@ -19,6 +19,9 @@
   var typeInput = adForm.querySelector('#type');
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
+  var houseImageContainer = document.querySelector('.ad-form__photo');
+  var userAvatar = document.querySelector('.ad-form-header__preview-avatar');
+
 
   var disableAll = function (elements, status) {
     for (var i = 0; i < elements.length; i++) {
@@ -92,6 +95,8 @@
   resetButton.addEventListener('click', function () {
     window.deactivateForm();
     adForm.reset();
+    houseImageContainer.innerHTML = '';
+    userAvatar.src = 'img/muffin-grey.svg';
   });
 
   typeInput.addEventListener('change', function (evt) {
