@@ -13,11 +13,11 @@
       if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
       } else {
-        window.displayError();
+        window.displayErrorUpload();
       }
     });
     xhr.addEventListener('error', function () {
-      window.displayError();
+      window.displayErrorUpload();
     });
 
     xhr.open('POST', URL);

@@ -7,11 +7,12 @@ window.movePin = function () {
   var PIN_SHIFT_X = 31;
   var PIN_SHIFT_Y = 53;
 
+
   mainPin.addEventListener('mousedown', function (evt) {
     if (evt.button === 0 && mainPin.dataset.isActive === 'false') {
       evt.preventDefault();
       window.activateForm();
-      window.load(window.successHandler, window.errorHandler);
+      window.load(window.successLoadHandler, window.errorLoadHandler);
     }
 
     var startCoords = {
@@ -39,6 +40,8 @@ window.movePin = function () {
         y: (mainPin.offsetTop - shift.y)
       };
 
+      var intViewportWidth = window.innerWidth;
+
       if (newLocation.y < 77) {
         newLocation.y = 77;
       } else if (newLocation.y > 630) {
@@ -47,7 +50,10 @@ window.movePin = function () {
         newLocation.x = -32;
       } else if (newLocation.x > 1168) {
         newLocation.x = 1168;
+      } else if (newLocation.x > intViewportWidth) {
+        newLocation.x = intViewportWidth - 55;
       }
+
 
       mainPin.style.top = newLocation.y + 'px';
       mainPin.style.left = newLocation.x + 'px';
@@ -71,7 +77,7 @@ window.movePin = function () {
     if (evt.keyCode === 13 && mainPin.dataset.isActive === 'false') {
       evt.preventDefault();
       window.activateForm();
-      window.load(window.successHandler, window.errorHandler);
+      window.load(window.successLoadHandler, window.errorLoadHandler);
     }
   });
 

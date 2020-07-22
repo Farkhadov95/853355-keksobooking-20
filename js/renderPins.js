@@ -19,7 +19,6 @@
       pinImage.src = filteredPoints[i].author.avatar;
       pinImage.alt = filteredPoints[i].offer.title;
       pinButton.dataset.id = filteredPoints[i].id;
-      // img.dataset.id = 4  /js/ ==== <img data-id="4"> /html/
       fragment.appendChild(pinElement);
     }
     pinContainer.appendChild(fragment);

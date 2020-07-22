@@ -26,7 +26,7 @@
     }
   };
 
-  window.deactiveteForm = function () {
+  window.deactivateForm = function () {
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
     pinContainer.innerHTML = '';
@@ -37,17 +37,18 @@
     window.closeCardAuto();
     mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
 
-    mapFiltersArray.forEach(function (item) {
-      item.selectedIndex = '0';
-    });
-    adSelectsArray.forEach(function (item) {
-      item.selectedIndex = '0';
-    });
+    var selectNone = function (array) {
+      array.forEach(function (item) {
+        item.selectedIndex = '0';
+      });
+    };
+
+    selectNone(mapFiltersArray);
+    selectNone(adSelectsArray);
+
     adSelectType.selectedIndex = '1';
     priceInput.placeholder = '1000';
-
     mainPin.dataset.isActive = false;
-
   };
 
   window.activateForm = function () {
@@ -57,7 +58,6 @@
     adFormHeader.disabled = false;
     disableAll(adFormElements, false);
     mainPin.dataset.isActive = true;
-
   };
 
 
@@ -90,7 +90,7 @@
 
   var resetButton = adForm.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', function () {
-    window.deactiveteForm();
+    window.deactivateForm();
     adForm.reset();
   });
 
@@ -120,7 +120,7 @@
   };
 
   adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), window.displaySuccess);
+    window.upload(new FormData(adForm), window.displaySuccessUpload);
     window.compareRoomsToGuests();
     evt.preventDefault();
   });

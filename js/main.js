@@ -8,6 +8,6 @@
   guestQuantity.addEventListener('change', window.compareRoomsToGuests);
 
   window.movePin();
-  window.deactiveteForm();
+  window.deactivateForm();
 
 })();
