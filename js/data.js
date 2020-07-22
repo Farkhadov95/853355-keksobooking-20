@@ -5,14 +5,14 @@
   var housingPrice = 'prices-any';
   var housingRoom = 'rooms-any';
   var housingGuest = 'guests-any';
-  var featureWifi;
-  var featureDishwasher;
-  var featureParking;
-  var featureWasher;
-  var featureElevator;
-  var featureConditioner;
+  var featureWifi = false;
+  var featureDishwasher = false;
+  var featureParking = false;
+  var featureWasher = false;
+  var featureElevator = false;
+  var featureConditioner = false;
 
-  window.successHandler = function (data) {
+  window.successLoadHandler = function (data) {
     window.points = data;
     window.points.forEach(function (p, ind) {
       p.id = ind;
@@ -22,7 +22,7 @@
   };
 
 
-  window.errorHandler = function (errorMessage) {
+  window.errorLoadHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';
