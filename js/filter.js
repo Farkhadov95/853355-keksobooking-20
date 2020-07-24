@@ -57,13 +57,6 @@
 
   });
 
-  // filters: {
-  // requiredType: requiredType,
-  // }
-  // filterPins({
-  // requiredType: 5,
-  // requiredPrice: 2000
-  // });
   window.filterPins = function (requiredType, requiredPrice, requiredRooms, requiredGuests, requiredWifi, requiredDishwasher, requiredParking, requiredWasher, requiredElevator, requiredConditioner) {
 
     var filteredHousingType = window.points.filter(function (it) {
