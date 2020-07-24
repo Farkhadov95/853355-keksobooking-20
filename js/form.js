@@ -13,121 +13,75 @@
   var mapFiltersArray = mapFilters.querySelectorAll('select');
   var adSelectsArray = adForm.querySelectorAll('select');
   var adSelectType = adForm.querySelector('#type');
-  var priceInput = adForm.querySelector('#price');
-  var roomsQuantity = adForm.querySelector('#room_number');
-  var guestQuantity = adForm.querySelector('#capacity');
   var typeInput = adForm.querySelector('#type');
+  var priceInput = adForm.querySelector('#price');
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
-  var houseImageContainer = document.querySelector('.ad-form__photo');
-  var userAvatar = document.querySelector('.ad-form-header__preview-avatar');
 
 
-  var disableAll = function (elements, status) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].disabled = status;
+  window.formToggle = {
+    deactivate: function () {
+      map.classList.add('map--faded');
+      adForm.classList.add('ad-form--disabled');
+      pinContainer.innerHTML = '';
+      housingFeatures.disabled = true;
+      adFormHeader.disabled = true;
+      window.disableAll(adFormElements, true);
+      window.disableAll(mapFiltersSet, true);
+      window.manageCard.autoClose();
+      mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
+      var selectNone = function (array) {
+        array.forEach(function (item) {
+          item.selectedIndex = '0';
+        });
+      };
+      selectNone(mapFiltersArray);
+      selectNone(adSelectsArray);
+      adSelectType.selectedIndex = '1';
+      priceInput.placeholder = '1000';
+      mainPin.dataset.isActive = false;
+    },
+    activate: function () {
+      map.classList.remove('map--faded');
+      adForm.classList.remove('ad-form--disabled');
+      housingFeatures.disabled = false;
+      adFormHeader.disabled = false;
+      window.disableAll(adFormElements, false);
+      mainPin.dataset.isActive = true;
+      window.isRoomsEnoughForGuests();
     }
   };
 
-  window.deactivateForm = function () {
-    map.classList.add('map--faded');
-    adForm.classList.add('ad-form--disabled');
-    pinContainer.innerHTML = '';
-    housingFeatures.disabled = true;
-    adFormHeader.disabled = true;
-    disableAll(adFormElements, true);
-    disableAll(mapFiltersSet, true);
-    window.closeCardAuto();
-    mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
-
-    var selectNone = function (array) {
-      array.forEach(function (item) {
-        item.selectedIndex = '0';
-      });
-    };
-
-    selectNone(mapFiltersArray);
-    selectNone(adSelectsArray);
-
-    adSelectType.selectedIndex = '1';
-    priceInput.placeholder = '1000';
-    mainPin.dataset.isActive = false;
-  };
-
-  window.activateForm = function () {
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    housingFeatures.disabled = false;
-    adFormHeader.disabled = false;
-    disableAll(adFormElements, false);
-    mainPin.dataset.isActive = true;
-  };
-
-
-  window.activateFilters = function () {
-    disableAll(mapFiltersSet, false);
-  };
-
-  window.compareRoomsToGuests = function () {
-    var roomsNumber = parseInt(roomsQuantity.value, 10);
-    var guestNumber = parseInt(guestQuantity.value, 10);
-    if (roomsNumber < guestNumber) {
-      roomsQuantity.setCustomValidity('Количество комнат недостаточно для данного количества гостей');
-      roomsQuantity.reportValidity();
-    } else if (roomsNumber > guestNumber) {
-      roomsQuantity.setCustomValidity('Это количество комнат недоступно для гостей');
-    } else {
-      roomsQuantity.setCustomValidity('');
-    }
-  };
-
-  var syncInAndOut = function (changeWhat, syncWhat) {
+  var syncCheckinAndCheckout = function (changeWhat, syncWhat) {
     changeWhat.addEventListener('change', function (evt) {
       syncWhat.value = evt.target.value;
     });
   };
 
-  syncInAndOut(timeIn, timeOut);
-  syncInAndOut(timeOut, timeIn);
-
-
-  var resetButton = adForm.querySelector('.ad-form__reset');
-  resetButton.addEventListener('click', function () {
-    window.deactivateForm();
-    adForm.reset();
-    houseImageContainer.innerHTML = '';
-    userAvatar.src = 'img/muffin-grey.svg';
-  });
-
-  typeInput.addEventListener('change', function (evt) {
-    minPriceOnHousingType(evt.target.value);
-  });
-
-  var minPriceOnHousingType = function (type) {
-    switch (type) {
-      case 'bungalo':
-        priceInput.min = 0;
-        priceInput.placeholder = 0;
-        break;
-      case 'flat':
-        priceInput.min = 1000;
-        priceInput.placeholder = 1000;
-        break;
-      case 'house':
-        priceInput.min = 5000;
-        priceInput.placeholder = 5000;
-        break;
-      case 'palace':
-        priceInput.min = 10000;
-        priceInput.placeholder = 10000;
-        break;
-    }
+  var changeMinPriceOnHousingType = function () {
+    typeInput.addEventListener('change', function (evt) {
+      switch (evt.target.value) {
+        case 'bungalo':
+          priceInput.min = 0;
+          priceInput.placeholder = 0;
+          break;
+        case 'flat':
+          priceInput.min = 1000;
+          priceInput.placeholder = 1000;
+          break;
+        case 'house':
+          priceInput.min = 5000;
+          priceInput.placeholder = 5000;
+          break;
+        case 'palace':
+          priceInput.min = 10000;
+          priceInput.placeholder = 10000;
+          break;
+      }
+    });
   };
 
-  adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), window.displaySuccessUpload);
-    window.compareRoomsToGuests();
-    evt.preventDefault();
-  });
-
+  syncCheckinAndCheckout(timeIn, timeOut);
+  syncCheckinAndCheckout(timeOut, timeIn);
+  changeMinPriceOnHousingType();
 })();

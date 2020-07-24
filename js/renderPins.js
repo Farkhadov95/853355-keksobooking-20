@@ -22,7 +22,7 @@
       fragment.appendChild(pinElement);
     }
     pinContainer.appendChild(fragment);
-    window.showCard();
+    window.manageCard.show();
   };
 
 })();

@@ -3,8 +3,9 @@
   var map = document.querySelector('.map');
   var mapFilter = document.querySelector('.map__filters-container');
   var offerTemplate = document.querySelector('#card').content;
+  var pinContainer = document.querySelector('.map__pins');
 
-  window.renderCards = function (card) {
+  var renderCards = function (card) {
     var offerElement = offerTemplate.cloneNode(true);
 
     var popupTitle = offerElement.querySelector('.popup__title');
@@ -62,22 +63,21 @@
     });
   };
 
-  var pinContainer = document.querySelector('.map__pins');
-
-  window.closeCardAuto = function () {
-    var mapCard = document.querySelector('.map__card');
-    if (mapCard) {
-      mapCard.remove();
-    }
-  };
-
-  window.showCard = function () {
-    var allPins = pinContainer.querySelectorAll('.map__pin');
-    for (var k = 1; k < allPins.length; k++) {
-      allPins[k].addEventListener('click', function (evt) {
-        window.closeCardAuto();
-        window.renderCards(window.points[evt.currentTarget.dataset.id]);
-      });
+  window.manageCard = {
+    autoClose: function () {
+      var mapCard = document.querySelector('.map__card');
+      if (mapCard) {
+        mapCard.remove();
+      }
+    },
+    show: function () {
+      var allPins = pinContainer.querySelectorAll('.map__pin');
+      for (var k = 1; k < allPins.length; k++) {
+        allPins[k].addEventListener('click', function (evt) {
+          window.manageCard.autoClose();
+          renderCards(window.points[evt.currentTarget.dataset.id]);
+        });
+      }
     }
   };
 
