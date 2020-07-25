@@ -12,9 +12,9 @@
       var successNotificationBlock = document.querySelector('.success');
 
       var removeSuccess = function () {
+        adForm.reset();
         successNotificationBlock.remove();
         window.formToggle.deactivate();
-        adForm.reset();
       };
 
       var removeSuccessOnEsc = function (evtKey) {
