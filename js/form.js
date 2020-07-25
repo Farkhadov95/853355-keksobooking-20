@@ -34,7 +34,7 @@
         item.checked = false;
       });
 
-      mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
+
       adSelectType.selectedIndex = '1';
 
       priceInput.placeholder = '1000';
@@ -44,7 +44,7 @@
       mainPin.dataset.isActive = false;
       mainPin.style.top = 375 + 'px';
       mainPin.style.left = 570 + 'px';
-      mainAddress.value = 570 + ', ' + 375;
+      mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
 
       var selectNone = function (array) {
         array.forEach(function (item) {
