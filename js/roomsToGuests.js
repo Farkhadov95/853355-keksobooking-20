@@ -16,11 +16,10 @@
     } else if (roomsNumber < 100 && guestNumber === 0) {
       roomsQuantity.setCustomValidity('Это количество комнат доступно только для гостей');
       return false;
-    } else {
-      roomsQuantity.setCustomValidity('');
-      roomsQuantity.reportValidity();
-      return true;
     }
+    roomsQuantity.setCustomValidity('');
+    roomsQuantity.reportValidity();
+    return true;
   };
 
 })();

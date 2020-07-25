@@ -5,5 +5,4 @@
       elements[i].disabled = status;
     }
   };
-
 })();

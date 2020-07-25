@@ -83,13 +83,17 @@
 
   var translateType = function (word) {
     switch (word) {
-      case 'palace': word = 'Дворец';
+      case 'palace':
+        word = 'Дворец';
         break;
-      case 'flat': word = 'Квартира';
+      case 'flat':
+        word = 'Квартира';
         break;
-      case 'house': word = 'Дом';
+      case 'house':
+        word = 'Дом';
         break;
-      case 'bungalo': word = 'Бунгало';
+      case 'bungalo':
+        word = 'Бунгало';
         break;
     }
     return word;

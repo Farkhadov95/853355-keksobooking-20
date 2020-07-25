@@ -11,11 +11,9 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
-        onSuccess(xhr.response);
-      } else {
+      return xhr.status === StatusCode.OK ?
+        onSuccess(xhr.response) :
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-      }
     });
     xhr.addEventListener('error', function () {
       onError('Произошла ошибка соединения');

@@ -10,11 +10,9 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
-        onSuccess(xhr.response);
-      } else {
+      return xhr.status === StatusCode.OK ?
+        onSuccess(xhr.response) :
         window.uploadHandler.error();
-      }
     });
     xhr.addEventListener('error', function () {
       window.uploadHandler.error();

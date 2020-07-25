@@ -18,8 +18,8 @@
 
   var resetButton = adForm.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', function () {
-    window.formToggle.deactivate();
     adForm.reset();
+    window.formToggle.deactivate();
     houseImageContainer.innerHTML = '';
     userAvatar.src = 'img/muffin-grey.svg';
   });

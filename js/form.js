@@ -17,7 +17,7 @@
   var priceInput = adForm.querySelector('#price');
   var timeIn = adForm.querySelector('#timein');
   var timeOut = adForm.querySelector('#timeout');
-
+  var formCheckboxes = mapFilters.querySelectorAll('.map__checkbox');
 
   window.formToggle = {
     deactivate: function () {
@@ -29,7 +29,23 @@
       window.disableAll(adFormElements, true);
       window.disableAll(mapFiltersSet, true);
       window.manageCard.autoClose();
+
+      formCheckboxes.forEach(function (item) {
+        item.checked = false;
+      });
+
       mainAddress.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
+      adSelectType.selectedIndex = '1';
+
+      priceInput.placeholder = '1000';
+      priceInput.min = 1000;
+      priceInput.max = 1000000;
+
+      mainPin.dataset.isActive = false;
+      mainPin.style.top = 375 + 'px';
+      mainPin.style.left = 570 + 'px';
+      mainAddress.value = 570 + ', ' + 375;
+
       var selectNone = function (array) {
         array.forEach(function (item) {
           item.selectedIndex = '0';
@@ -37,9 +53,6 @@
       };
       selectNone(mapFiltersArray);
       selectNone(adSelectsArray);
-      adSelectType.selectedIndex = '1';
-      priceInput.placeholder = '1000';
-      mainPin.dataset.isActive = false;
     },
     activate: function () {
       map.classList.remove('map--faded');
